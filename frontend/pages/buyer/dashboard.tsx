@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import UserProfileDropdown from '../../components/UserProfileDropdown';
 
 interface User {
   id: string;
@@ -73,13 +74,8 @@ export default function BuyerDashboard() {
               <span>AGRI-HOPE</span>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-gray-700">Welcome, {user.firstName}!</span>
-              <button 
-                onClick={handleLogout}
-                className="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-4 py-2 rounded-full hover:scale-105 transition-transform duration-300 font-medium text-sm"
-              >
-                Logout
-              </button>
+              <span className="text-gray-700 hidden lg:block">Welcome back!</span>
+              <UserProfileDropdown user={user} />
             </div>
           </div>
         </div>

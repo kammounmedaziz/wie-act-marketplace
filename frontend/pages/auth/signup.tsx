@@ -349,13 +349,28 @@ export default function SignupPage() {
 
       // Upload profile image if provided
       if (formData.profileImage && result._id) {
-        const formDataImage = new FormData();
-        formDataImage.append('profileImage', formData.profileImage);
+        try {
+          const formDataImage = new FormData();
+          formDataImage.append('profileImage', formData.profileImage);
 
-        await fetch(`/api/users/${result._id}/upload-profile-image`, {
-          method: 'POST',
-          body: formDataImage,
-        });
+          console.log('Uploading profile image for user:', result._id);
+          const uploadResponse = await fetch(`/api/users/${result._id}/upload-profile-image`, {
+            method: 'POST',
+            body: formDataImage,
+          });
+
+          if (!uploadResponse.ok) {
+            const uploadError = await uploadResponse.json();
+            console.error('Profile image upload failed:', uploadError);
+            // Don't fail registration if image upload fails, just log the error
+          } else {
+            const uploadResult = await uploadResponse.json();
+            console.log('Profile image uploaded successfully:', uploadResult);
+          }
+        } catch (uploadErr) {
+          console.error('Profile image upload error:', uploadErr);
+          // Don't fail registration if image upload fails
+        }
       }
 
       // Redirect to login page
